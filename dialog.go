@@ -298,19 +298,19 @@ func (d *Dialog) Getcolor() string {
 
 func (d *Dialog) Combobox(item ...string) (string, error) {
 	var command string
-	if d.environment == CONSOLE {
+	switch d.environment {
+	case CONSOLE:
+		command = "menu"
 		d.afterSize = append(d.afterSize, "0")
 		for _, param := range item {
 			d.afterSize = append(d.afterSize, param)
 			d.afterSize = append(d.afterSize, param)
 		}
-		command = "menu"
-	} else {
-		for _, param := range item {
-			d.afterSize = append(d.afterSize, param)
-		}
+	default:
 		command = "combobox"
+		d.afterSize = append(d.afterSize, item...)
 	}
+
 	return d.exec(command, true)
 }
 
