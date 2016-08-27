@@ -35,6 +35,7 @@ func TestGetPathOeRaiseError(t *testing.T) {
 		{Env: GTK, Err: fmt.Errorf("Package not found!\nPlease install " + GTK)},
 		{Env: DIALOG_TEST_ENV, Err: nil},
 		{Env: AUTO, Err: fmt.Errorf(DIALOG_PACKAGE_AUTO_NOT_FOUND)},
+		{Env: "sadadsAUTO", Err: fmt.Errorf(DIALOG_ERR_UNKNWN_PACKAGE + "sadadsAUTO")},
 	}
 
 	if len(fixtures) < 1 {

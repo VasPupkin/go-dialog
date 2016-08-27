@@ -16,6 +16,7 @@ import (
 
 const (
 	DIALOG_PACKAGE_AUTO_NOT_FOUND = "Package not found!\nPlease install " + KDE + " or " + GTK + " or " + X + " or " + CONSOLE
+	DIALOG_ERR_UNKNWN_PACKAGE     = "Unknown package "
 )
 
 // helper function that checks path and return error, nil
@@ -42,7 +43,7 @@ func getPathOeRaiseError(environment string) error {
 	case DIALOG_TEST_ENV:
 		break
 	default:
-		err = fmt.Errorf("Unknown package " + environment)
+		err = fmt.Errorf(DIALOG_ERR_UNKNWN_PACKAGE + environment)
 	}
 	return err
 
