@@ -165,6 +165,29 @@ func TestPassivepopup(t *testing.T) {
 	}
 }
 
+// func TestCombobox(t *testing.T) {
+// 	var res = new(MyDialog)
+// 	res.reset()
+// 	exec_current_error = fmt.Errorf(DIALOG_ERR_CANCEL)
+
+// 	var passivepopupTests = []struct {
+// 		text    string
+// 		timeout int
+// 	}{
+// 		{"[w]", 3},
+// 		{"[ string2]", 10},
+// 		{"[ string2  22 %$ ]", 10},
+// 	}
+// 	res.environment = DIALOG_TEST_ENV
+// 	for _, tt := range passivepopupTests {
+// 		res.Combobox(tt.text)
+// 		expected_str := "[" + DIALOG_TEST_ENV + " --ok-label OK --no-shadow --passivepopup 0 0 " + tt.text + " " + strconv.Itoa(tt.timeout) + " --attach 0]"
+// 		if fmt.Sprintf("%v", LastCMD) != expected_str {
+// 			t.Errorf("Expected %v, actual %v ", expected_str, LastCMD)
+// 		}
+// 	}
+// }
+
 func TestGeticon(t *testing.T) {
 	var res = new(MyDialog)
 	res.reset()
