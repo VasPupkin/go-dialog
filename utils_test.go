@@ -110,7 +110,6 @@ func TestDialogFindPathOrExitConsole(t *testing.T) {
 	}
 
 	t.Fatalf("process ran with err %v , want exit status 1", err)
-
 }
 
 func TestDialogFindPathOrExitKDE(t *testing.T) {
@@ -167,6 +166,49 @@ func TestDialogFindPathOrExitGTK(t *testing.T) {
 
 }
 
+func TestDialogFindPathOrExit_EXIT(t *testing.T) {
+	var ok bool = false // The default value can be omitted :)
+
+	// Prepare testing
+	my_private_exit_function = func(c int) {
+		ok = true
+	}
+
+	fixtures := []struct {
+		Env string
+		Ok  bool
+	}{
+		{Env: CONSOLE, Ok: true},
+		{Env: X, Ok: true},
+		{Env: KDE, Ok: true},
+		{Env: GTK, Ok: true},
+		{Env: DIALOG_TEST_ENV, Ok: false},
+		{Env: KDE, Ok: true},
+		{Env: "sadadsAUTO", Ok: true},
+	}
+
+	if len(fixtures) < 1 {
+		t.Fatalf("Failed because you should have test cases")
+	}
+	os.Setenv("PATH", "")
+	for _, tt := range fixtures {
+		ok = false
+		DialogFindPathOrExit(tt.Env)
+		// Check
+		if tt.Ok {
+			if !ok {
+				t.Errorf("Error in DialogFindPathOrExit() Env:" + tt.Env)
+			}
+		} else {
+			if ok {
+				t.Errorf("Error in DialogFindPathOrExit() Env:" + tt.Env)
+			}
+		}
+
+	}
+	// Restore if need
+	my_private_exit_function = os.Exit
+}
 func TestDialogFindPathOrExitX(t *testing.T) {
 	if os.Getenv("BE_CRASHER") == "TestDialogFindPathOrExitX" {
 		DialogFindPathOrExit(X)

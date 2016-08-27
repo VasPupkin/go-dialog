@@ -14,6 +14,8 @@ import (
 	// "time"
 )
 
+var my_private_exit_function func(code int) = os.Exit
+
 const (
 	DIALOG_PACKAGE_AUTO_NOT_FOUND = "Package not found!\nPlease install " + KDE + " or " + GTK + " or " + X + " or " + CONSOLE
 	DIALOG_ERR_UNKNWN_PACKAGE     = "Unknown package "
@@ -46,14 +48,14 @@ func getPathOeRaiseError(environment string) error {
 		err = fmt.Errorf(DIALOG_ERR_UNKNWN_PACKAGE + environment)
 	}
 	return err
-
 }
 
 func DialogFindPathOrExit(environment string) {
 	err := getPathOeRaiseError(environment)
 	if err != nil {
 		fmt.Println(os.Stderr, err.Error())
-		os.Exit(1)
+		// os.Exit(1)
+		my_private_exit_function(1)
 	}
 
 }
