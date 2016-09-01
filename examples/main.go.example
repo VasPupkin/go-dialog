@@ -144,6 +144,13 @@ func main() {
 	// err := d.Textbox("/tmp/test.txt")
 	// fmt.Printf("err:%v\n", err)
 
+	// ============= Timebox =================== //
+	// d := dialog.New(dialog.AUTO, 0)	
+	// d.SetTitle("title")
+	// d.SetBackTitle("backtitle")
+	// res, err := d.Timebox(time.Now())
+	// fmt.Println(res, err)
+
 	/// ============= !!!OLD stuff =================== //
 	// d := dialog.New(dialog.AUTO, 0)
 
