@@ -88,6 +88,8 @@ func main() {
 
 	// ============= Fselect =================== //
 	// d := dialog.New(dialog.AUTO, 0)	
+	// d.SetTitle("title")
+	// d.SetBackTitle("backtitle")
 	// res, err := d.Fselect("/tmp/test.txt")
 	// fmt.Println(res, err)
 
@@ -97,7 +99,16 @@ func main() {
 
 	// ============= Infobox =================== //
 	// d := dialog.New(dialog.AUTO, 0)	
+	// d.SetTitle("title")
+	// d.SetBackTitle("backtitle")
 	// res, err := d.Inputbox("Hello world!")
+	// fmt.Println(res, err)
+
+	// ============= Inputmenu =================== //
+	// d := dialog.New(dialog.AUTO, 0)	
+	// d.SetTitle("title")
+	// d.SetBackTitle("backtitle")
+	// res, err := d.Inputmenu(10, "Tag 1", "Item 1", "Tag 2", "Item 2", "Tag 3", "Item 3")
 	// fmt.Println(res, err)
 
 	/// ============= !!!OLD stuff =================== //

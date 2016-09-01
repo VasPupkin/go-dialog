@@ -385,17 +385,11 @@ func (d *Dialog) Inputbox(value string) (string, error) {
 func (d *Dialog) Inputmenu(menuHeight int, tagItem ...string) ([]string, error) {
 	d.EnableCatch255()
 	d.afterSize = append(d.afterSize, strconv.Itoa(menuHeight))
-	for _, param := range tagItem {
-		d.afterSize = append(d.afterSize, param)
-	}
-
-	var command string
+	d.afterSize = append(d.afterSize, tagItem...)
+	command := "inputmenu"
 	if d.environment == KDE {
 		command = "menu"
-	} else {
-		command = "inputmenu"
 	}
-
 	val, err := d.exec(command, true)
 	res := strings.Split(val, "\n")
 	return res, err
