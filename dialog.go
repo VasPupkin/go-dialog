@@ -481,14 +481,16 @@ func (d *Dialog) Radiolist(listHeight int, tagItemStatus ...string) (string, err
 	return str, err
 }
 
+// The directory-selection dialog displays a text-entry window in which you can type a directory,
+// and above that a windows with  directory names.
 func (d *Dialog) Dselect(dirpath string) (string, error) {
 	d.EnableCatch255()
 	d.beforeSize = append(d.beforeSize, dirpath)
-	var command string
+	command := "dselect"
 	if d.environment == KDE {
 		return "", nil
 	}
-	command = "dselect"
+
 	return d.exec(command, false)
 }
 
