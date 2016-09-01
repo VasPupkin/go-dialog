@@ -404,7 +404,6 @@ func (d *Dialog) Menu(menuHeight int, tagItem ...string) (string, error) {
 	d.afterSize = append(d.afterSize, strconv.Itoa(menuHeight))
 	d.afterSize = append(d.afterSize, tagItem...)
 	return d.exec("menu", true)
-
 }
 
 func (d *Dialog) Msgbox(text string) {

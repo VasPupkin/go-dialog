@@ -124,6 +124,13 @@ func main() {
 	// d.SetBackTitle("backtitle")
 	// d.Msgbox("Hello world!")
 
+	// ============= Passwordbox =================== //
+	// d := dialog.New(dialog.AUTO, 0)	
+	// d.SetTitle("title")
+	// d.SetBackTitle("backtitle")
+	// res, err := d.Passwordbox(true)
+	// fmt.Println(res, err)
+
 	/// ============= !!!OLD stuff =================== //
 	// d := dialog.New(dialog.AUTO, 0)
 
