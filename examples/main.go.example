@@ -95,6 +95,11 @@ func main() {
 	// d := dialog.New(dialog.AUTO, 0)	
 	// d.Infobox("Hello world!")
 
+	// ============= Infobox =================== //
+	// d := dialog.New(dialog.AUTO, 0)	
+	// res, err := d.Inputbox("Hello world!")
+	// fmt.Println(res, err)
+
 	/// ============= !!!OLD stuff =================== //
 	// d := dialog.New(dialog.AUTO, 0)
 
