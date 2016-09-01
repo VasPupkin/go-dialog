@@ -665,6 +665,38 @@ func TestTimebox(t *testing.T) {
 	}
 }
 
+func TestRadiolist(t *testing.T) {
+	var res = new(MyDialog)
+	res.reset()
+	exec_current_error = fmt.Errorf(DIALOG_ERR_CANCEL)
+	lastCmd := fmt.Sprintf("[test_env --ok-label OK --no-shadow --radiolist  0 0 10 Tag 1 Item 1 --attach 0]")
+
+	var getCalendarTests = []struct {
+		text    string
+		err     error
+		lastCmd string
+	}{
+		{"[[tex1t]]", nil, lastCmd},
+		{"[text]", fmt.Errorf("xerrorx"), lastCmd},
+		{"", nil, lastCmd},
+	}
+
+	res.environment = DIALOG_TEST_ENV
+	for _, tt := range getCalendarTests {
+		res.exec_output = tt.text
+		res.exec_error = tt.err
+		val_Calendar, _ := res.Radiolist(10, "Tag 1", "Item 1")
+		if fmt.Sprintf("%v", res.lastCmd) != fmt.Sprintf("%v", lastCmd) {
+			t.Errorf("Expected res.lastCmd %v, actual '%v' ", fmt.Sprintf("%v", res.lastCmd), fmt.Sprintf("%v", lastCmd))
+
+		}
+		expected_str := tt.text
+		if fmt.Sprintf("%v", val_Calendar) != fmt.Sprintf("%v", expected_str) {
+			t.Errorf("Expected %v, actual '%v' error %v", expected_str, val_Calendar, tt.err)
+		}
+	}
+}
+
 // tests for structure changes
 func TestHelpButtonTrue(t *testing.T) {
 	d := NewTestDialogRAW(DIALOG_TEST_ENV, 0)

@@ -151,6 +151,14 @@ func main() {
 	// res, err := d.Timebox(time.Now())
 	// fmt.Println(res, err)
 
+	// ============= Radiolist =================== //
+	// d := dialog.New(dialog.AUTO, 0)	
+	// d.SetTitle("title")
+	// d.SetBackTitle("backtitle")
+	// res, err := d.Radiolist(0, "Tag 1", "Item 1", "on", "Tag 2", "Item 2", "off", "Tag 3", "Item 3", "off")
+	// fmt.Println(res, err)
+
+
 	/// ============= !!!OLD stuff =================== //
 	// d := dialog.New(dialog.AUTO, 0)
 
