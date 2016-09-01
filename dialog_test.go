@@ -318,8 +318,9 @@ func TestMixedform(t *testing.T) {
 	var res = new(MyDialog)
 	res.reset()
 	exec_current_error = fmt.Errorf(DIALOG_ERR_CANCEL)
-	lastCmd := fmt.Sprintf("[test_env --ok-label OK --no-shadow --mixedform Title 0 0 0 Selection1 1 1 2046 1 10 20 0 0 Selection2 2 1 0 2 10 20 0 0 Selection3 3 1 0 3 10 20 0 0 --attach 0]")
-
+	lastCmdF := fmt.Sprintf("[test_env --ok-label OK --no-shadow --mixedform Title 0 0 0 Selection1 1 1 2046 1 10 20 0 0 Selection2 2 1 0 2 10 20 0 0 Selection3 3 1 0 3 10 20 0 0 --attach 0]")
+	lastCmdT := fmt.Sprintf("[test_env --ok-label OK --no-shadow --insecure --mixedform Title 0 0 0 Selection1 1 1 2046 1 10 20 0 0 Selection2 2 1 0 2 10 20 0 0 Selection3 3 1 0 3 10 20 0 0 --attach 0]")
+	var lastCmd string
 	var getCalendarTests = []struct {
 		text    string
 		err     error
@@ -332,18 +333,25 @@ func TestMixedform(t *testing.T) {
 	l := []string{"Selection1", "1", "1", "2046", "1", "10", "20", "0", "0", "Selection2", "2", "1", "0", "2", "10", "20", "0", "0", "Selection3", "3", "1", "0", "3", "10", "20", "0", "0"}
 
 	res.environment = DIALOG_TEST_ENV
-	for _, tt := range getCalendarTests {
-		res.exec_output = tt.text
-		res.exec_error = tt.err
-		val_Calendar, _ := res.Mixedform("Title", false, l[0:]...)
-		if fmt.Sprintf("%v", res.lastCmd) != fmt.Sprintf("%v", lastCmd) {
-			t.Errorf("Expected res.lastCmd %v, actual '%v' ", fmt.Sprintf("%v", res.lastCmd), fmt.Sprintf("%v", lastCmd))
+	for _, is_insecure := range []bool{true, false} {
 
-		}
-		expected_str := tt.text
-		if fmt.Sprintf("%v", val_Calendar) != fmt.Sprintf("[%v]", expected_str) {
-			t.Errorf("Expected %v, actual '%v' error %v", fmt.Sprintf("[%v]", expected_str), val_Calendar, tt.err)
+		for _, tt := range getCalendarTests {
+			lastCmd = lastCmdF
+			if is_insecure {
+				lastCmd = lastCmdT
+			}
+			res.exec_output = tt.text
+			res.exec_error = tt.err
+			val_Calendar, _ := res.Mixedform("Title", is_insecure, l[0:]...)
+			if fmt.Sprintf("%v", res.lastCmd) != fmt.Sprintf("%v", lastCmd) {
+				t.Errorf("Expected res.lastCmd %v, actual '%v' ", fmt.Sprintf("%v", res.lastCmd), fmt.Sprintf("%v", lastCmd))
 
+			}
+			expected_str := tt.text
+			if fmt.Sprintf("%v", val_Calendar) != fmt.Sprintf("[%v]", expected_str) {
+				t.Errorf("Expected %v, actual '%v' error %v", fmt.Sprintf("[%v]", expected_str), val_Calendar, tt.err)
+
+			}
 		}
 	}
 }
