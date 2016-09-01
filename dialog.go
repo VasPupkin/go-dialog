@@ -27,10 +27,14 @@ const (
 )
 
 const (
-	DIALOG_ERR_CANCEL        = "exit status 1"
-	DIALOG_ERR_HELP          = "exit status 2"
-	DIALOG_ERR_EXTRA         = "exit status 3"
-	DIALOG_ERR_255           = "exit status 255"
+	DIALOG_ERR_CANCEL           = "exit status 1"
+	DIALOG_ERR_HELP             = "exit status 2"
+	DIALOG_ERR_EXTRA            = "exit status 3"
+	DIALOG_ERR_255              = "exit status 255"
+	DIALOG_CALENDAR_START_YEAR  = "2006"
+	DIALOG_CALENDAR_START_MONTH = "02"
+	DIALOG_CALENDAR_START_DAY   = "02"
+
 	NUMBER_OF_CATCH255_TRIES = 512
 )
 
@@ -315,9 +319,9 @@ func (d *Dialog) Combobox(item ...string) (string, error) {
 }
 
 func (d *Dialog) Calendar(date time.Time) (string, error) {
-	d.afterSize = append(d.afterSize, date.Format("2006"))
-	d.afterSize = append(d.afterSize, date.Format("01"))
-	d.afterSize = append(d.afterSize, date.Format("02"))
+	d.afterSize = append(d.afterSize, date.Format(DIALOG_CALENDAR_START_YEAR))
+	d.afterSize = append(d.afterSize, date.Format(DIALOG_CALENDAR_START_MONTH))
+	d.afterSize = append(d.afterSize, date.Format(DIALOG_CALENDAR_START_DAY))
 	return d.exec("calendar", true)
 }
 

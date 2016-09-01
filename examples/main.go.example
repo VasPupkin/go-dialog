@@ -67,6 +67,10 @@ func main() {
 	// res, err := d.Mixedform("Title", false, l[0:]...)
 	// fmt.Println(res, err)
 
+	// ============= Calendar =================== //
+	// d := dialog.New(dialog.AUTO, 0)
+	//res, err := d.Calendar(time.Now())
+    // fmt.Println(res, err)
 
 	////////////////////// old stuff
 	// d := dialog.New(dialog.AUTO, 0)
