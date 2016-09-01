@@ -131,6 +131,12 @@ func main() {
 	// res, err := d.Passwordbox(true)
 	// fmt.Println(res, err)
 
+	// ============= Pause =================== //
+	// d := dialog.New(dialog.AUTO, 0)	
+	// d.SetTitle("title")
+	// d.SetBackTitle("backtitle")
+	//d.Pause(5)
+
 	/// ============= !!!OLD stuff =================== //
 	// d := dialog.New(dialog.AUTO, 0)
 
