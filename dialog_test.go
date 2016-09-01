@@ -333,11 +333,9 @@ func TestMixedform(t *testing.T) {
 
 	res.environment = DIALOG_TEST_ENV
 	for _, tt := range getCalendarTests {
-
 		res.exec_output = tt.text
 		res.exec_error = tt.err
 		val_Calendar, _ := res.Mixedform("Title", false, l[0:]...)
-		// t.Logf("%v %v", res.lastCmd, lastCmd)
 		if fmt.Sprintf("%v", res.lastCmd) != fmt.Sprintf("%v", lastCmd) {
 			t.Errorf("Expected res.lastCmd %v, actual '%v' ", fmt.Sprintf("%v", res.lastCmd), fmt.Sprintf("%v", lastCmd))
 
@@ -368,11 +366,9 @@ func TestFselect(t *testing.T) {
 
 	res.environment = DIALOG_TEST_ENV
 	for _, tt := range getCalendarTests {
-
 		res.exec_output = tt.text
 		res.exec_error = tt.err
 		val_Calendar, _ := res.Fselect("/tmp/test.txt")
-		// t.Logf("%v %v", res.lastCmd, lastCmd)
 		if fmt.Sprintf("%v", res.lastCmd) != fmt.Sprintf("%v", lastCmd) {
 			t.Errorf("Expected res.lastCmd %v, actual '%v' ", fmt.Sprintf("%v", res.lastCmd), fmt.Sprintf("%v", lastCmd))
 
@@ -380,6 +376,33 @@ func TestFselect(t *testing.T) {
 		expected_str := tt.text
 		if fmt.Sprintf("%v", val_Calendar) != fmt.Sprintf("%v", expected_str) {
 			t.Errorf("Expected %v, actual '%v' error %v", expected_str, val_Calendar, tt.err)
+
+		}
+	}
+}
+
+func TestInfobox(t *testing.T) {
+	var res = new(MyDialog)
+	res.reset()
+	exec_current_error = fmt.Errorf(DIALOG_ERR_CANCEL)
+	lastCmd := fmt.Sprintf("[test_env --ok-label OK --no-shadow --infobox /tmp/test.txt 0 0 --attach 0]")
+	var getCalendarTests = []struct {
+		text    string
+		err     error
+		lastCmd string
+	}{
+		{"[[tex1t]]", nil, lastCmd},
+		{"[text]", fmt.Errorf("xerrorx"), lastCmd},
+		{"", nil, lastCmd},
+	}
+
+	res.environment = DIALOG_TEST_ENV
+	for _, tt := range getCalendarTests {
+		res.exec_output = tt.text
+		res.exec_error = tt.err
+		res.Infobox("/tmp/test.txt")
+		if fmt.Sprintf("%v", res.lastCmd) != fmt.Sprintf("%v", lastCmd) {
+			t.Errorf("Expected res.lastCmd %v, actual '%v' ", fmt.Sprintf("%v", res.lastCmd), fmt.Sprintf("%v", lastCmd))
 
 		}
 	}

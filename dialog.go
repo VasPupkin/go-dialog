@@ -369,11 +369,9 @@ func (d *Dialog) Fselect(filepath string) (string, error) {
 
 func (d *Dialog) Infobox(text string) {
 	d.beforeSize = append(d.beforeSize, text)
-	var command string
+	command := "infobox"
 	if d.environment == KDE {
 		command = "msgbox"
-	} else {
-		command = "infobox"
 	}
 	d.exec(command, false)
 }
