@@ -328,9 +328,10 @@ func (d *Dialog) Calendar(date time.Time) (string, error) {
 func (d *Dialog) Checklist(listHeight int, tagItemStatus ...string) ([]string, error) {
 	var list []string
 	d.afterSize = append(d.afterSize, strconv.Itoa(listHeight))
-	for _, param := range tagItemStatus {
-		d.afterSize = append(d.afterSize, param)
-	}
+	d.afterSize = append(d.afterSize, tagItemStatus...)
+	// for _, param := range tagItemStatus {
+	// 	d.afterSize = append(d.afterSize, param)
+	// }
 	str, err := d.exec("checklist", true)
 	for _, item := range strings.Split(str, " ") {
 		list = append(list, strings.Replace(item, "\"", "", -1))
