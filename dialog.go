@@ -442,6 +442,10 @@ func (d *Dialog) Pause(seconds int) {
 	}
 }
 
+//   A  text  box  lets  you  display the contents of a text file in a dialog box.
+// It is like a simple text file viewer.  The user can move
+// through the file by using the cursor, page-up, page-down and HOME/END keys
+// available on most keyboards.
 func (d *Dialog) Textbox(filepath string) error {
 	d.beforeSize = append(d.beforeSize, filepath)
 	_, err := d.exec("textbox", false)

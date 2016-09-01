@@ -137,6 +137,13 @@ func main() {
 	// d.SetBackTitle("backtitle")
 	//d.Pause(5)
 
+	// ============= Textbox =================== //
+	// d := dialog.New(dialog.AUTO, 0)	
+	// d.SetTitle("title")
+	// d.SetBackTitle("backtitle")
+	// err := d.Textbox("/tmp/test.txt")
+	// fmt.Printf("err:%v\n", err)
+
 	/// ============= !!!OLD stuff =================== //
 	// d := dialog.New(dialog.AUTO, 0)
 
