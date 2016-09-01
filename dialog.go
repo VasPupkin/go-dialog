@@ -360,11 +360,9 @@ func (d *Dialog) Mixedform(title string, insecure bool, tagItemStatus ...string)
 func (d *Dialog) Fselect(filepath string) (string, error) {
 	d.EnableCatch255()
 	d.beforeSize = append(d.beforeSize, filepath)
-	var command string
+	command := "fselect"
 	if d.environment == KDE {
 		command = "getopenfilename"
-	} else {
-		command = "fselect"
 	}
 	return d.exec(command, false)
 }
