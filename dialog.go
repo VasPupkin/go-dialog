@@ -402,9 +402,7 @@ func (d *Dialog) EnableCatch255() {
 func (d *Dialog) Menu(menuHeight int, tagItem ...string) (string, error) {
 	d.EnableCatch255()
 	d.afterSize = append(d.afterSize, strconv.Itoa(menuHeight))
-	for _, param := range tagItem {
-		d.afterSize = append(d.afterSize, param)
-	}
+	d.afterSize = append(d.afterSize, tagItem...)
 	return d.exec("menu", true)
 
 }
