@@ -72,6 +72,11 @@ func main() {
 	//res, err := d.Calendar(time.Now())
     // fmt.Println(res, err)
 
+	// ============= Checklist =================== //
+	// d := dialog.New(dialog.AUTO, 0)	
+	// res, err := d.Checklist(0, "Tag 1", "Item 1", "on", "Tag 2", "Item 2", "off", "Tag 3", "Item 3", "off")
+	// fmt.Println(res, err)
+
 	////////////////////// old stuff
 	// d := dialog.New(dialog.AUTO, 0)
 
