@@ -5,6 +5,7 @@
 // Dmitry Orzhehovsky <dorzheh@gmail.com>
 // Adding new functionality
 
+// Valeriy Solovyov <weldpua2008@gmail.com>
 package dialog
 
 import (
@@ -37,6 +38,9 @@ const (
 
 	NUMBER_OF_CATCH255_TRIES = 512
 )
+
+type Controller struct {
+}
 
 var LastCMD []string
 var AllCMD []string
