@@ -10,7 +10,7 @@ package main
 
 import (
 	"fmt"
-	"github.com/weldpua2008/go-dialog"	
+	"github.com/VasPupkin/go-dialog"	
 )
 func main() {
    d := dialog.New(dialog.AUTO, 0)
@@ -21,7 +21,7 @@ func main() {
 Installation
 =========
 ```bash
- go get "github.com/weldpua2008/go-dialog"
+ go get "github.com/VasPupkin/go-dialog"
 ```
 
 Contributors
