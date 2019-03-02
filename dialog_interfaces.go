@@ -58,6 +58,7 @@ type DialogIface interface {
 	Textbox(filepath string) error
 	Timebox(date time.Time) (string, error)
 	Yesno() bool
+	Question(text string) bool
 	Radiolist(listHeight int, tagItemStatus ...string) (string, error)
 	Dselect(dirpath string) (string, error)
 	Progressbar() ProgressIface

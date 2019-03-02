@@ -220,7 +220,8 @@ func (d *Dialog) GetCmd(dType string, allowLabel bool) *exec.Cmd {
 		cmd.Args = append(cmd.Args, "--attach")
 		cmd.Args = append(cmd.Args, strconv.Itoa(d.parentId))
 	}
-
+	fmt.Println(cmd)
+	//	os.Exit(1)
 	return cmd
 
 }
@@ -462,6 +463,18 @@ func (d *Dialog) Timebox(date time.Time) (string, error) {
 func (d *Dialog) Yesno() bool {
 	d.EnableCatch255()
 	if _, err := d.exec("yesno", true); err != nil {
+		Test_e = err
+		if err.Error() == DIALOG_ERR_CANCEL {
+			return false
+		}
+	}
+	return true
+}
+
+func (d *Dialog) Question(text string) bool {
+	d.beforeSize = append(d.beforeSize, text)
+	d.EnableCatch255()
+	if _, err := d.exec("yesno", false); err != nil {
 		Test_e = err
 		if err.Error() == DIALOG_ERR_CANCEL {
 			return false
