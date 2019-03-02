@@ -220,10 +220,7 @@ func (d *Dialog) GetCmd(dType string, allowLabel bool) *exec.Cmd {
 		cmd.Args = append(cmd.Args, "--attach")
 		cmd.Args = append(cmd.Args, strconv.Itoa(d.parentId))
 	}
-	fmt.Println(cmd)
-	//	os.Exit(1)
 	return cmd
-
 }
 
 func (d *Dialog) exec(dType string, allowLabel bool) (string, error) {
