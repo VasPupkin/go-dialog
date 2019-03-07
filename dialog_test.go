@@ -8,7 +8,7 @@ import (
 	// "strings"
 	// "reflect"
 	// "github.com/stretchr/testify/mock"
-	"strconv"
+
 	"testing"
 	"time"
 )
@@ -35,19 +35,19 @@ func (d *MyDialog) exec(dType string, allowLabel bool) (string, error) {
 	return exec_string_error, exec_current_error
 }
 
-func NewTestDialog(environment string, parentId int) DialogIface {
+func NewTestDialog(environment string) DialogIface {
 	var res = new(Dialog)
 	LastCMD = []string{}
 	return res
 }
-func NewTestDialogExec(environment string, parentId int) DialogIface {
+func NewTestDialogExec(environment string) DialogIface {
 	var res = new(MyDialog)
 	res.environment = DIALOG_TEST_ENV
 	LastCMD = []string{}
 	return res
 }
 
-func NewTestDialogRAW(environment string, parentId int) Dialog {
+func NewTestDialogRAW(environment string) Dialog {
 	var res = new(Dialog)
 	LastCMD = []string{}
 	// f := func(dType string, allowLabel bool) (string, error) {
@@ -77,7 +77,7 @@ func Test_exec(t *testing.T) {
 }
 
 func TestYesNo(t *testing.T) {
-	d := NewTestDialogExec(DIALOG_TEST_ENV, 0)
+	d := NewTestDialogExec(DIALOG_TEST_ENV)
 	exec_current_error = nil
 	actual_bool := d.Yesno()
 	expected_bool := true
@@ -85,7 +85,7 @@ func TestYesNo(t *testing.T) {
 		t.Errorf("Expected %v, actual %v ", expected_bool, actual_bool)
 	}
 	x := LastCMD
-	expected_str := "[" + DIALOG_TEST_ENV + " --no-shadow --yesno  0 0 --attach 0]"
+	expected_str := "[" + DIALOG_TEST_ENV + " --no-shadow --yesno  0 0 --stdout]"
 	if fmt.Sprintf("%v", x) != expected_str {
 		t.Errorf("Expected %v, actual %v ", expected_str, x)
 	}
@@ -103,68 +103,70 @@ func TestYesNo(t *testing.T) {
 	}
 }
 
-func TestSlider(t *testing.T) {
-	var res = new(MyDialog)
-	res.reset()
-	exec_current_error = fmt.Errorf(DIALOG_ERR_CANCEL)
-	expected := 1
-	res.environment = DIALOG_TEST_ENV
-	res.exec_output = "1"
-	res.exec_error = nil //fmt.Errorf(DIALOG_ERR_CANCEL)
-	min := 8
-	max := 10
-	step := 2
-	actual_bool, err := res.Slider(min, max, step)
+// not in console dialog
+// func TestSlider(t *testing.T) {
+// 	var res = new(MyDialog)
+// 	res.reset()
+// 	exec_current_error = fmt.Errorf(DIALOG_ERR_CANCEL)
+// 	expected := 1
+// 	res.environment = DIALOG_TEST_ENV
+// 	res.exec_output = "1"
+// 	res.exec_error = nil //fmt.Errorf(DIALOG_ERR_CANCEL)
+// 	min := 8
+// 	max := 10
+// 	step := 2
+// 	actual_bool, err := res.Slider(min, max, step)
 
-	if expected != actual_bool {
-		t.Errorf("Expected %v, actual %v ", expected, actual_bool)
-	}
+// 	if expected != actual_bool {
+// 		t.Errorf("Expected %v, actual %v ", expected, actual_bool)
+// 	}
 
-	if err != nil {
-		t.Errorf("Expected nil actual %v", err)
+// 	if err != nil {
+// 		t.Errorf("Expected nil actual %v", err)
 
-	}
+// 	}
 
-	expected = 0
-	res.exec_output = "2 2 2 23 "
+// 	expected = 0
+// 	res.exec_output = "2 2 2 23 "
 
-	res.exec_error = fmt.Errorf("error d.exec(slider, true)")
-	expected_err := fmt.Errorf("strconv.ParseInt: parsing \"" + res.exec_output + "\": invalid syntax")
+// 	res.exec_error = fmt.Errorf("error d.exec(slider, true)")
+// 	expected_err := fmt.Errorf("strconv.Atoi: parsing \"" + res.exec_output + "\": invalid syntax")
 
-	actual_bool, err = res.Slider(min, max, step)
+// 	actual_bool, err = res.Slider(min, max, step)
 
-	if expected != actual_bool {
-		t.Errorf("Expected2 %v, actual %v ", expected, actual_bool)
-	}
+// 	if expected != actual_bool {
+// 		t.Errorf("Expected2 %v, actual %v ", expected, actual_bool)
+// 	}
 
-	if fmt.Sprintf("%v", err) != fmt.Sprintf("%v", expected_err) {
-		t.Errorf("Expected %v actual '%v'", expected_err, err)
-	}
+// 	if fmt.Sprintf("%v", err) != fmt.Sprintf("%v", expected_err) {
+// 		t.Errorf("Expected %v actual '%v'", expected_err, err)
+// 	}
 
-}
+// }
 
-func TestPassivepopup(t *testing.T) {
-	var res = new(MyDialog)
-	res.reset()
-	exec_current_error = fmt.Errorf(DIALOG_ERR_CANCEL)
+// not in console dialog
+// func TestPassivepopup(t *testing.T) {
+// 	var res = new(MyDialog)
+// 	res.reset()
+// 	exec_current_error = fmt.Errorf(DIALOG_ERR_CANCEL)
 
-	var passivepopupTests = []struct {
-		text    string
-		timeout int
-	}{
-		{"[w]", 3},
-		{"[ string2]", 10},
-		{"[ string2  22 %$ ]", 10},
-	}
-	res.environment = DIALOG_TEST_ENV
-	for _, tt := range passivepopupTests {
-		res.Passivepopup(tt.text, tt.timeout)
-		expected_str := "[" + DIALOG_TEST_ENV + " --ok-label OK --no-shadow --passivepopup 0 0 " + tt.text + " " + strconv.Itoa(tt.timeout) + " --attach 0]"
-		if fmt.Sprintf("%v", LastCMD) != expected_str {
-			t.Errorf("Expected %v, actual %v ", expected_str, LastCMD)
-		}
-	}
-}
+// 	var passivepopupTests = []struct {
+// 		text    string
+// 		timeout int
+// 	}{
+// 		{"[w]", 3},
+// 		{"[ string2]", 10},
+// 		{"[ string2  22 %$ ]", 10},
+// 	}
+// 	res.environment = DIALOG_TEST_ENV
+// 	for _, tt := range passivepopupTests {
+// 		res.Passivepopup(tt.text, tt.timeout)
+// 		expected_str := "[" + DIALOG_TEST_ENV + " --ok-label OK --no-shadow --passivepopup 0 0 " + tt.text + " " + strconv.Itoa(tt.timeout) + " --stdout]"
+// 		if fmt.Sprintf("%v", LastCMD) != expected_str {
+// 			t.Errorf("Expected %v, actual %v ", expected_str, LastCMD)
+// 		}
+// 	}
+// }
 
 // func TestCombobox(t *testing.T) {
 // 	var res = new(MyDialog)
@@ -182,109 +184,109 @@ func TestPassivepopup(t *testing.T) {
 // 	res.environment = DIALOG_TEST_ENV
 // 	for _, tt := range passivepopupTests {
 // 		res.Combobox(tt.text)
-// 		expected_str := "[" + DIALOG_TEST_ENV + " --ok-label OK --no-shadow --passivepopup 0 0 " + tt.text + " " + strconv.Itoa(tt.timeout) + " --attach 0]"
+// 		expected_str := "[" + DIALOG_TEST_ENV + " --ok-label OK --no-shadow --passivepopup 0 0 " + tt.text + " " + strconv.Itoa(tt.timeout) + " --stdout]"
 // 		if fmt.Sprintf("%v", LastCMD) != expected_str {
 // 			t.Errorf("Expected %v, actual %v ", expected_str, LastCMD)
 // 		}
 // 	}
 // }
 
-func TestGeticon(t *testing.T) {
-	var res = new(MyDialog)
-	res.reset()
-	exec_current_error = fmt.Errorf(DIALOG_ERR_CANCEL)
+// func TestGeticon(t *testing.T) {
+// 	var res = new(MyDialog)
+// 	res.reset()
+// 	exec_current_error = fmt.Errorf(DIALOG_ERR_CANCEL)
 
-	var geticonTests = []struct {
-		text string
-		err  error
-	}{
-		{"[tex1t]", nil},
-		{"[text]", fmt.Errorf("xerrorx")},
-		{"", nil},
-	}
-	res.environment = DIALOG_TEST_ENV
-	for _, tt := range geticonTests {
+// 	var geticonTests = []struct {
+// 		text string
+// 		err  error
+// 	}{
+// 		{"[tex1t]", nil},
+// 		{"[text]", fmt.Errorf("xerrorx")},
+// 		{"", nil},
+// 	}
+// 	res.environment = DIALOG_TEST_ENV
+// 	for _, tt := range geticonTests {
 
-		res.exec_output = tt.text
-		res.exec_error = tt.err
-		val_Getcolor := res.Geticon()
-		expected_str := tt.text
-		if val_Getcolor != expected_str {
-			t.Errorf("Expected %v, actual '%v' error %v", expected_str, val_Getcolor, tt.err)
+// 		res.exec_output = tt.text
+// 		res.exec_error = tt.err
+// 		val_Getcolor := res.Geticon()
+// 		expected_str := tt.text
+// 		if val_Getcolor != expected_str {
+// 			t.Errorf("Expected %v, actual '%v' error %v", expected_str, val_Getcolor, tt.err)
 
-		}
-	}
-}
+// 		}
+// 	}
+// }
 
-func TestGetcolor(t *testing.T) {
-	var res = new(MyDialog)
-	res.reset()
-	exec_current_error = fmt.Errorf(DIALOG_ERR_CANCEL)
+// func TestGetcolor(t *testing.T) {
+// 	var res = new(MyDialog)
+// 	res.reset()
+// 	exec_current_error = fmt.Errorf(DIALOG_ERR_CANCEL)
 
-	var getcolorTests = []struct {
-		text string
-		err  error
-	}{
-		{"[tex1t]", nil},
-		{"[text]", fmt.Errorf("xerrorx")},
-		{"", nil},
-	}
-	res.environment = DIALOG_TEST_ENV
-	for _, tt := range getcolorTests {
+// 	var getcolorTests = []struct {
+// 		text string
+// 		err  error
+// 	}{
+// 		{"[tex1t]", nil},
+// 		{"[text]", fmt.Errorf("xerrorx")},
+// 		{"", nil},
+// 	}
+// 	res.environment = DIALOG_TEST_ENV
+// 	for _, tt := range getcolorTests {
 
-		res.exec_output = tt.text
-		res.exec_error = tt.err
-		val_Getcolor := res.Getcolor()
-		expected_str := tt.text
-		if val_Getcolor != expected_str {
-			t.Errorf("Expected %v, actual '%v' error %v", expected_str, val_Getcolor, tt.err)
+// 		res.exec_output = tt.text
+// 		res.exec_error = tt.err
+// 		val_Getcolor := res.Getcolor()
+// 		expected_str := tt.text
+// 		if val_Getcolor != expected_str {
+// 			t.Errorf("Expected %v, actual '%v' error %v", expected_str, val_Getcolor, tt.err)
 
-		}
-	}
-}
+// 		}
+// 	}
+// }
 
-func TestCalendar(t *testing.T) {
-	var res = new(MyDialog)
-	res.reset()
-	exec_current_error = fmt.Errorf(DIALOG_ERR_CANCEL)
-	var date time.Time
+// func TestCalendar(t *testing.T) {
+// 	var res = new(MyDialog)
+// 	res.reset()
+// 	exec_current_error = fmt.Errorf(DIALOG_ERR_CANCEL)
+// 	var date time.Time
 
-	lastCmd := fmt.Sprintf("[test_env --ok-label OK --no-shadow --calendar  0 0 %v %v %v --attach 0]", date.Format(DIALOG_CALENDAR_START_YEAR), date.Format(DIALOG_CALENDAR_START_MONTH), date.Format(DIALOG_CALENDAR_START_DAY))
+// 	lastCmd := fmt.Sprintf("[test_env --ok-label OK --no-shadow --calendar  0 0 %v %v %v --stdout]", date.Format(DIALOG_CALENDAR_START_YEAR), date.Format(DIALOG_CALENDAR_START_MONTH), date.Format(DIALOG_CALENDAR_START_DAY))
 
-	var getCalendarTests = []struct {
-		text    string
-		err     error
-		lastCmd string
-	}{
-		{"[tex1t]", nil, lastCmd},
-		{"[text]", fmt.Errorf("xerrorx"), lastCmd},
-		{"", nil, lastCmd},
-	}
-	var ti time.Time
-	res.environment = DIALOG_TEST_ENV
-	for _, tt := range getCalendarTests {
+// 	var getCalendarTests = []struct {
+// 		text    string
+// 		err     error
+// 		lastCmd string
+// 	}{
+// 		{"[tex1t]", nil, lastCmd},
+// 		{"[text]", fmt.Errorf("xerrorx"), lastCmd},
+// 		{"", nil, lastCmd},
+// 	}
+// 	var ti time.Time
+// 	res.environment = DIALOG_TEST_ENV
+// 	for _, tt := range getCalendarTests {
 
-		res.exec_output = tt.text
-		res.exec_error = tt.err
-		val_Calendar, _ := res.Calendar(ti)
-		// t.Logf("%v %v", res.lastCmd, lastCmd)
-		if fmt.Sprintf("%v", res.lastCmd) != fmt.Sprintf("%v", lastCmd) {
-			t.Errorf("Expected res.lastCmd %v, actual '%v' ", fmt.Sprintf("%v", res.lastCmd), fmt.Sprintf("%v", lastCmd))
+// 		res.exec_output = tt.text
+// 		res.exec_error = tt.err
+// 		val_Calendar, _ := res.Calendar(ti)
+// 		// t.Logf("%v %v", res.lastCmd, lastCmd)
+// 		if fmt.Sprintf("%v", res.lastCmd) != fmt.Sprintf("%v", lastCmd) {
+// 			t.Errorf("Expected res.lastCmd %v, actual '%v' ", fmt.Sprintf("%v", res.lastCmd), fmt.Sprintf("%v", lastCmd))
 
-		}
-		expected_str := tt.text
-		if val_Calendar != expected_str {
-			t.Errorf("Expected %v, actual '%v' error %v", expected_str, val_Calendar, tt.err)
+// 		}
+// 		expected_str := tt.text
+// 		if val_Calendar != expected_str {
+// 			t.Errorf("Expected %v, actual '%v' error %v", expected_str, val_Calendar, tt.err)
 
-		}
-	}
-}
+// 		}
+// 	}
+// }
 
 func TestChecklist(t *testing.T) {
 	var res = new(MyDialog)
 	res.reset()
 	exec_current_error = fmt.Errorf(DIALOG_ERR_CANCEL)
-	lastCmd := fmt.Sprintf("[test_env --ok-label OK --no-shadow --checklist  0 0 0 tag1 tag2 --attach 0]")
+	lastCmd := fmt.Sprintf("[test_env --ok-label OK --no-shadow --checklist  0 0 0 tag1 tag2 --stdout]")
 
 	var getCalendarTests = []struct {
 		text    string
@@ -318,8 +320,8 @@ func TestMixedform(t *testing.T) {
 	var res = new(MyDialog)
 	res.reset()
 	exec_current_error = fmt.Errorf(DIALOG_ERR_CANCEL)
-	lastCmdF := fmt.Sprintf("[test_env --ok-label OK --no-shadow --mixedform Title 0 0 0 Selection1 1 1 2046 1 10 20 0 0 Selection2 2 1 0 2 10 20 0 0 Selection3 3 1 0 3 10 20 0 0 --attach 0]")
-	lastCmdT := fmt.Sprintf("[test_env --ok-label OK --no-shadow --insecure --mixedform Title 0 0 0 Selection1 1 1 2046 1 10 20 0 0 Selection2 2 1 0 2 10 20 0 0 Selection3 3 1 0 3 10 20 0 0 --attach 0]")
+	lastCmdF := fmt.Sprintf("[test_env --ok-label OK --no-shadow --mixedform Title 0 0 0 Selection1 1 1 2046 1 10 20 0 0 Selection2 2 1 0 2 10 20 0 0 Selection3 3 1 0 3 10 20 0 0 --stdout]")
+	lastCmdT := fmt.Sprintf("[test_env --ok-label OK --no-shadow --insecure --mixedform Title 0 0 0 Selection1 1 1 2046 1 10 20 0 0 Selection2 2 1 0 2 10 20 0 0 Selection3 3 1 0 3 10 20 0 0 --stdout]")
 	var lastCmd string
 	var getCalendarTests = []struct {
 		text    string
@@ -360,7 +362,7 @@ func TestFselect(t *testing.T) {
 	var res = new(MyDialog)
 	res.reset()
 	exec_current_error = fmt.Errorf(DIALOG_ERR_CANCEL)
-	lastCmd := fmt.Sprintf("[test_env --ok-label OK --no-shadow --fselect /tmp/test.txt 0 0 --attach 0]")
+	lastCmd := fmt.Sprintf("[test_env --ok-label OK --no-shadow --fselect /tmp/test.txt 0 0 --stdout]")
 
 	var getCalendarTests = []struct {
 		text    string
@@ -393,7 +395,7 @@ func TestInfobox(t *testing.T) {
 	var res = new(MyDialog)
 	res.reset()
 	exec_current_error = fmt.Errorf(DIALOG_ERR_CANCEL)
-	lastCmd := fmt.Sprintf("[test_env --ok-label OK --no-shadow --infobox /tmp/test.txt 0 0 --attach 0]")
+	lastCmd := fmt.Sprintf("[test_env --ok-label OK --no-shadow --infobox /tmp/test.txt 0 0 --stdout]")
 	var getCalendarTests = []struct {
 		text    string
 		err     error
@@ -420,7 +422,7 @@ func TestInputbox(t *testing.T) {
 	var res = new(MyDialog)
 	res.reset()
 	exec_current_error = fmt.Errorf(DIALOG_ERR_CANCEL)
-	lastCmd := fmt.Sprintf("[test_env --ok-label OK --no-shadow --inputbox  0 0 /tmp/test.txt --attach 0]")
+	lastCmd := fmt.Sprintf("[test_env --ok-label OK --no-shadow --inputbox  0 0 /tmp/test.txt --stdout]")
 
 	var getCalendarTests = []struct {
 		text    string
@@ -452,7 +454,7 @@ func TestInputmenu(t *testing.T) {
 	var res = new(MyDialog)
 	res.reset()
 	exec_current_error = fmt.Errorf(DIALOG_ERR_CANCEL)
-	lastCmd := fmt.Sprintf("[test_env --ok-label OK --no-shadow --inputmenu  0 0 10 Tag 1 Item 1 --attach 0]")
+	lastCmd := fmt.Sprintf("[test_env --ok-label OK --no-shadow --inputmenu  0 0 10 Tag 1 Item 1 --stdout]")
 
 	var getCalendarTests = []struct {
 		text    string
@@ -484,7 +486,7 @@ func TestMenu(t *testing.T) {
 	var res = new(MyDialog)
 	res.reset()
 	exec_current_error = fmt.Errorf(DIALOG_ERR_CANCEL)
-	lastCmd := fmt.Sprintf("[test_env --ok-label OK --no-shadow --menu  0 0 10 Tag 1 Item 1 --attach 0]")
+	lastCmd := fmt.Sprintf("[test_env --ok-label OK --no-shadow --menu  0 0 10 Tag 1 Item 1 --stdout]")
 
 	var getCalendarTests = []struct {
 		text    string
@@ -516,7 +518,7 @@ func TestMsgbox(t *testing.T) {
 	var res = new(MyDialog)
 	res.reset()
 	exec_current_error = fmt.Errorf(DIALOG_ERR_CANCEL)
-	lastCmd := fmt.Sprintf("[test_env --ok-label OK --no-shadow --msgbox /tmp/test.txt 0 0 --attach 0]")
+	lastCmd := fmt.Sprintf("[test_env --ok-label OK --no-shadow --msgbox /tmp/test.txt 0 0 --stdout]")
 	var getCalendarTests = []struct {
 		text    string
 		err     error
@@ -543,8 +545,8 @@ func TestPasswordbox(t *testing.T) {
 	var res = new(MyDialog)
 	res.reset()
 	exec_current_error = fmt.Errorf(DIALOG_ERR_CANCEL)
-	lastCmdT := fmt.Sprintf("[test_env --ok-label OK --no-shadow --insecure --passwordbox  0 0  --attach 0]")
-	lastCmdF := fmt.Sprintf("[test_env --ok-label OK --no-shadow --passwordbox  0 0  --attach 0]")
+	lastCmdT := fmt.Sprintf("[test_env --ok-label OK --no-shadow --insecure --passwordbox  0 0  --stdout]")
+	lastCmdF := fmt.Sprintf("[test_env --ok-label OK --no-shadow --passwordbox  0 0  --stdout]")
 	var lastCmd string
 	var getCalendarTests = []struct {
 		text    string
@@ -582,7 +584,7 @@ func TestPause(t *testing.T) {
 	var res = new(MyDialog)
 	res.reset()
 	exec_current_error = fmt.Errorf(DIALOG_ERR_CANCEL)
-	lastCmd := fmt.Sprintf("[test_env --ok-label OK --no-shadow --pause  0 0 5 --attach 0]")
+	lastCmd := fmt.Sprintf("[test_env --ok-label OK --no-shadow --pause  0 0 5 --stdout]")
 	var getCalendarTests = []struct {
 		text    string
 		err     error
@@ -609,7 +611,7 @@ func TestTextbox(t *testing.T) {
 	var res = new(MyDialog)
 	res.reset()
 	exec_current_error = fmt.Errorf(DIALOG_ERR_CANCEL)
-	lastCmd := fmt.Sprintf("[test_env --ok-label OK --no-shadow --textbox /tmp/file.txt 0 0 --attach 0]")
+	lastCmd := fmt.Sprintf("[test_env --ok-label OK --no-shadow --textbox /tmp/file.txt 0 0 --stdout]")
 	var getCalendarTests = []struct {
 		text    string
 		err     error
@@ -636,7 +638,7 @@ func TestTimebox(t *testing.T) {
 	var res = new(MyDialog)
 	res.reset()
 	exec_current_error = fmt.Errorf(DIALOG_ERR_CANCEL)
-	lastCmd := fmt.Sprintf("[test_env --ok-label OK --no-shadow --timebox  0 0 00 00 00 --attach 0]")
+	lastCmd := fmt.Sprintf("[test_env --ok-label OK --no-shadow --timebox  0 0 00 00 00 --stdout]")
 
 	var getCalendarTests = []struct {
 		text    string
@@ -669,7 +671,7 @@ func TestRadiolist(t *testing.T) {
 	var res = new(MyDialog)
 	res.reset()
 	exec_current_error = fmt.Errorf(DIALOG_ERR_CANCEL)
-	lastCmd := fmt.Sprintf("[test_env --ok-label OK --no-shadow --radiolist  0 0 10 Tag 1 Item 1 --attach 0]")
+	lastCmd := fmt.Sprintf("[test_env --ok-label OK --no-shadow --radiolist  0 0 10 Tag 1 Item 1 --stdout]")
 
 	var getCalendarTests = []struct {
 		text    string
@@ -701,7 +703,7 @@ func TestDselect(t *testing.T) {
 	var res = new(MyDialog)
 	res.reset()
 	exec_current_error = fmt.Errorf(DIALOG_ERR_CANCEL)
-	lastCmd := fmt.Sprintf("[test_env --ok-label OK --no-shadow --dselect /some/pathItem1 0 0 --attach 0]")
+	lastCmd := fmt.Sprintf("[test_env --ok-label OK --no-shadow --dselect /some/pathItem1 0 0 --stdout]")
 
 	var getCalendarTests = []struct {
 		text    string
@@ -731,7 +733,7 @@ func TestDselect(t *testing.T) {
 
 // tests for structure changes
 func TestHelpButtonTrue(t *testing.T) {
-	d := NewTestDialogRAW(DIALOG_TEST_ENV, 0)
+	d := NewTestDialogRAW(DIALOG_TEST_ENV)
 	expected_val := true
 	d.HelpButton(expected_val)
 
@@ -747,7 +749,7 @@ func TestHelpButtonTrue(t *testing.T) {
 }
 
 func TestHelpButton(t *testing.T) {
-	d := NewTestDialogRAW(DIALOG_TEST_ENV, 0)
+	d := NewTestDialogRAW(DIALOG_TEST_ENV)
 
 	var tests = []bool{true, false}
 	for _, expected_val := range tests {
@@ -761,7 +763,7 @@ func TestHelpButton(t *testing.T) {
 }
 
 func TestSetBackTitle(t *testing.T) {
-	d := NewTestDialogRAW(DIALOG_TEST_ENV, 0)
+	d := NewTestDialogRAW(DIALOG_TEST_ENV)
 
 	var tests = []string{"", "backtitle"}
 	for _, expected_val := range tests {
@@ -775,7 +777,7 @@ func TestSetBackTitle(t *testing.T) {
 }
 
 func TestSetTitle(t *testing.T) {
-	d := NewTestDialogRAW(DIALOG_TEST_ENV, 0)
+	d := NewTestDialogRAW(DIALOG_TEST_ENV)
 
 	var tests = []string{"", "backtitle"}
 	for _, expected_val := range tests {
@@ -789,7 +791,7 @@ func TestSetTitle(t *testing.T) {
 }
 
 func TestSetLabel(t *testing.T) {
-	d := NewTestDialogRAW(DIALOG_TEST_ENV, 0)
+	d := NewTestDialogRAW(DIALOG_TEST_ENV)
 
 	var tests = []string{"", "backtitle"}
 	for _, expected_val := range tests {
@@ -803,7 +805,7 @@ func TestSetLabel(t *testing.T) {
 }
 
 func TestSetOkLabel(t *testing.T) {
-	d := NewTestDialogRAW(DIALOG_TEST_ENV, 0)
+	d := NewTestDialogRAW(DIALOG_TEST_ENV)
 
 	var tests = []string{"", "backtitle"}
 	for _, expected_val := range tests {
@@ -817,7 +819,7 @@ func TestSetOkLabel(t *testing.T) {
 }
 
 func TestSetYesLabel(t *testing.T) {
-	d := NewTestDialogRAW(DIALOG_TEST_ENV, 0)
+	d := NewTestDialogRAW(DIALOG_TEST_ENV)
 
 	var tests = []string{"", "backtitle"}
 	for _, expected_val := range tests {
@@ -831,7 +833,7 @@ func TestSetYesLabel(t *testing.T) {
 }
 
 func TestSetNoLabel(t *testing.T) {
-	d := NewTestDialogRAW(DIALOG_TEST_ENV, 0)
+	d := NewTestDialogRAW(DIALOG_TEST_ENV)
 
 	var tests = []string{"", "backtitle"}
 	for _, expected_val := range tests {
@@ -845,7 +847,7 @@ func TestSetNoLabel(t *testing.T) {
 }
 
 func TestSetExtraLabel(t *testing.T) {
-	d := NewTestDialogRAW(DIALOG_TEST_ENV, 0)
+	d := NewTestDialogRAW(DIALOG_TEST_ENV)
 
 	var tests = []string{"", "backtitle"}
 	for _, expected_val := range tests {
@@ -859,7 +861,7 @@ func TestSetExtraLabel(t *testing.T) {
 }
 
 func TestShadowFalse(t *testing.T) {
-	d := NewTestDialogRAW(DIALOG_TEST_ENV, 0)
+	d := NewTestDialogRAW(DIALOG_TEST_ENV)
 
 	expected_val := false
 	d.Shadow(expected_val)
@@ -870,7 +872,7 @@ func TestShadowFalse(t *testing.T) {
 }
 
 func TestLabel(t *testing.T) {
-	d := NewTestDialogRAW(DIALOG_TEST_ENV, 0)
+	d := NewTestDialogRAW(DIALOG_TEST_ENV)
 	expected_val := "label"
 	d.SetHelpLabel(expected_val)
 
@@ -880,7 +882,7 @@ func TestLabel(t *testing.T) {
 }
 
 func TestSetCancelLabel(t *testing.T) {
-	d := NewTestDialogRAW(DIALOG_TEST_ENV, 0)
+	d := NewTestDialogRAW(DIALOG_TEST_ENV)
 	expected_val := "label"
 	d.SetCancelLabel(expected_val)
 

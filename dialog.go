@@ -5,6 +5,9 @@
 // Dmitry Orzhehovsky <dorzheh@gmail.com>
 // Adding new functionality
 
+// Remove environments unless console and test_env
+// add some variants for menus and questions
+
 package dialog
 
 import (
@@ -18,22 +21,23 @@ import (
 )
 
 const (
-	CONSOLE         = "dialog"
-	KDE             = "kdialog"
-	GTK             = "gtkdialog"
-	X               = "Xdialog"
+	CONSOLE = "dialog"
+	//	KDE             = "kdialog"
+	//	GTK             = "gtkdialog"
+	//	X               = "Xdialog"
 	DIALOG_TEST_ENV = "test_env"
-	AUTO            = "auto"
+
+//	AUTO            = "auto"
 )
 
 const (
-	DIALOG_ERR_CANCEL           = "exit status 1"
-	DIALOG_ERR_HELP             = "exit status 2"
-	DIALOG_ERR_EXTRA            = "exit status 3"
-	DIALOG_ERR_255              = "exit status 255"
-	DIALOG_CALENDAR_START_YEAR  = "2006"
-	DIALOG_CALENDAR_START_MONTH = "02"
-	DIALOG_CALENDAR_START_DAY   = "02"
+	DIALOG_ERR_CANCEL = "exit status 1"
+	DIALOG_ERR_HELP   = "exit status 2"
+	DIALOG_ERR_EXTRA  = "exit status 3"
+	DIALOG_ERR_255    = "exit status 255"
+	// DIALOG_CALENDAR_START_YEAR  = "2006"
+	// DIALOG_CALENDAR_START_MONTH = "02"
+	// DIALOG_CALENDAR_START_DAY   = "02"
 
 	NUMBER_OF_CATCH255_TRIES = 512
 )
@@ -47,24 +51,28 @@ type Dialog struct {
 	BaseDialog
 }
 
-func New(environment string, parentId int) *Dialog {
-
+func NewWithEnv(environment string) *Dialog {
 	var err error
 	var res = new(Dialog)
-	if environment == AUTO || environment == "" {
-		for _, pkg := range []string{KDE, GTK, X, CONSOLE} {
-			_, err = exec.LookPath(pkg)
-			if err == nil {
-				res.environment = pkg
-				break
-			}
-		}
-		if res.environment == "" {
-			fmt.Println("Package not found!\nPlease install " + KDE + " or " + GTK + " or " + X + " or " + CONSOLE)
-		}
-	} else if environment == DIALOG_TEST_ENV {
+	//if environment == AUTO || environment == "" {
+	//	for _, pkg := range []string{KDE, GTK, X, CONSOLE} {
+	//	_, err = exec.LookPath(CONSOLE)
+	//	if err == nil {
+	//		res.environment = pkg
+	//	break
+	//	}
+	//}
+	//	if res.environment == "" {
+	//		fmt.Println("Package not found!\nPlease install " + KDE + " or " + GTK + " or " + X + " or " + CONSOLE)
+	//	}
+
+	//	} else
+	if environment == DIALOG_TEST_ENV {
 		res.environment = DIALOG_TEST_ENV
 	} else {
+		if environment == "" {
+			environment = CONSOLE
+		}
 		_, err = exec.LookPath(environment)
 		if err == nil {
 			res.environment = environment
@@ -77,13 +85,17 @@ func New(environment string, parentId int) *Dialog {
 		os.Exit(1)
 	}
 
-	res.parentId = parentId
+	// res.parentId = parentId
 	res.reset()
 	return res
 }
 
-func NewDialogWithIface(environment string, parentId int) DialogIface {
-	return New(environment, parentId)
+func NewDialogWithIface(environment string) DialogIface {
+	return NewWithEnv(environment)
+}
+
+func New() *Dialog {
+	return NewWithEnv(CONSOLE)
 }
 
 func (d *Dialog) Shadow(truefalse bool) {
@@ -207,19 +219,22 @@ func (d *Dialog) GetCmd(dType string, allowLabel bool) *exec.Cmd {
 	for _, arg = range d.beforeSize {
 		cmd.Args = append(cmd.Args, arg)
 	}
-	if d.environment != KDE {
-		cmd.Args = append(cmd.Args, strconv.Itoa(d.height))
-		cmd.Args = append(cmd.Args, strconv.Itoa(d.width))
-	}
+	// if d.environment != KDE {
+	cmd.Args = append(cmd.Args, strconv.Itoa(d.height))
+	cmd.Args = append(cmd.Args, strconv.Itoa(d.width))
+	// }
 	for _, arg = range d.afterSize {
 		cmd.Args = append(cmd.Args, arg)
 	}
-	if d.environment == CONSOLE {
-		cmd.Args = append(cmd.Args, "--stdout")
-	} else {
-		cmd.Args = append(cmd.Args, "--attach")
-		cmd.Args = append(cmd.Args, strconv.Itoa(d.parentId))
-	}
+	// because only console available
+	//if d.environment == CONSOLE {
+	cmd.Args = append(cmd.Args, "--stdout")
+	// } else {
+	// cmd.Args = append(cmd.Args, "--attach")
+	// 	cmd.Args = append(cmd.Args, strconv.Itoa(d.parentId))
+	//}
+	// fmt.Println(cmd.Args)
+	// time.Sleep(1 * time.Second)
 	return cmd
 }
 
@@ -270,33 +285,34 @@ func (d *Dialog) exec(dType string, allowLabel bool) (string, error) {
 	return return_string, err
 }
 
-func (d *Dialog) Slider(min int, max int, step int) (int, error) {
-	d.afterSize = append(d.afterSize, strconv.Itoa(min))
-	d.afterSize = append(d.afterSize, strconv.Itoa(max))
-	d.afterSize = append(d.afterSize, strconv.Itoa(step))
-	val, err := d.exec("slider", true)
-	res, err1 := strconv.Atoi(val)
-	if err1 != nil {
-		return res, err1
-	}
-	return res, err
-}
+// not for console dialog
+// func (d *Dialog) Slider(min int, max int, step int) (int, error) {
+// 	d.afterSize = append(d.afterSize, strconv.Itoa(min))
+// 	d.afterSize = append(d.afterSize, strconv.Itoa(max))
+// 	d.afterSize = append(d.afterSize, strconv.Itoa(step))
+// 	val, err := d.exec("slider", true)
+// 	res, err1 := strconv.Atoi(val)
+// 	if err1 != nil {
+// 		return res, err1
+// 	}
+// 	return res, err
+// }
 
-func (d *Dialog) Passivepopup(text string, timeout int) {
-	d.afterSize = append(d.afterSize, text)
-	d.afterSize = append(d.afterSize, strconv.Itoa(timeout))
-	d.exec("passivepopup", false)
-}
+// func (d *Dialog) Passivepopup(text string, timeout int) {
+// 	d.afterSize = append(d.afterSize, text)
+// 	d.afterSize = append(d.afterSize, strconv.Itoa(timeout))
+// 	d.exec("passivepopup", false)
+// }
 
-func (d *Dialog) Geticon() string {
-	val, _ := d.exec("geticon", false)
-	return val
-}
+// func (d *Dialog) Geticon() string {
+// 	val, _ := d.exec("geticon", false)
+// 	return val
+// }
 
-func (d *Dialog) Getcolor() string {
-	val, _ := d.exec("getcolor", false)
-	return val
-}
+// func (d *Dialog) Getcolor() string {
+// 	val, _ := d.exec("getcolor", false)
+// 	return val
+// }
 
 func (d *Dialog) Combobox(item ...string) (string, error) {
 	var command string
@@ -316,12 +332,13 @@ func (d *Dialog) Combobox(item ...string) (string, error) {
 	return d.exec(command, true)
 }
 
-func (d *Dialog) Calendar(date time.Time) (string, error) {
-	d.afterSize = append(d.afterSize, date.Format(DIALOG_CALENDAR_START_YEAR))
-	d.afterSize = append(d.afterSize, date.Format(DIALOG_CALENDAR_START_MONTH))
-	d.afterSize = append(d.afterSize, date.Format(DIALOG_CALENDAR_START_DAY))
-	return d.exec("calendar", true)
-}
+// not for console dialog
+// func (d *Dialog) Calendar(date time.Time) (string, error) {
+// 	d.afterSize = append(d.afterSize, date.Format(DIALOG_CALENDAR_START_YEAR))
+// 	d.afterSize = append(d.afterSize, date.Format(DIALOG_CALENDAR_START_MONTH))
+// 	d.afterSize = append(d.afterSize, date.Format(DIALOG_CALENDAR_START_DAY))
+// 	return d.exec("calendar", true)
+// }
 
 func (d *Dialog) Checklist(listHeight int, tagItemStatus ...string) ([]string, error) {
 	var list []string
@@ -359,18 +376,18 @@ func (d *Dialog) Fselect(filepath string) (string, error) {
 	d.EnableCatch255()
 	d.beforeSize = append(d.beforeSize, filepath)
 	command := "fselect"
-	if d.environment == KDE {
-		command = "getopenfilename"
-	}
+	// if d.environment == KDE {
+	// 	command = "getopenfilename"
+	// }
 	return d.exec(command, false)
 }
 
 func (d *Dialog) Infobox(text string) {
 	d.beforeSize = append(d.beforeSize, text)
 	command := "infobox"
-	if d.environment == KDE {
-		command = "msgbox"
-	}
+	// if d.environment == KDE {
+	// 	command = "msgbox"
+	// }
 	d.exec(command, false)
 }
 
@@ -385,9 +402,9 @@ func (d *Dialog) Inputmenu(menuHeight int, tagItem ...string) ([]string, error) 
 	d.afterSize = append(d.afterSize, strconv.Itoa(menuHeight))
 	d.afterSize = append(d.afterSize, tagItem...)
 	command := "inputmenu"
-	if d.environment == KDE {
-		command = "menu"
-	}
+	// if d.environment == KDE {
+	// 	command = "menu"
+	// }
 	val, err := d.exec(command, true)
 	res := strings.Split(val, "\n")
 	return res, err
@@ -404,6 +421,15 @@ func (d *Dialog) Menu(menuHeight int, tagItem ...string) (string, error) {
 	return d.exec("menu", true)
 }
 
+// same as Menu, but add some text above menu items
+func (d *Dialog) MenuWText(menuHeight int, text string, tagItem ...string) (string, error) {
+	d.EnableCatch255()
+	d.beforeSize = append(d.beforeSize, text)
+	d.afterSize = append(d.afterSize, strconv.Itoa(menuHeight))
+	d.afterSize = append(d.afterSize, tagItem...)
+	return d.exec("menu", false)
+}
+
 func (d *Dialog) Msgbox(text string) {
 	d.beforeSize = append(d.beforeSize, text)
 	d.exec("msgbox", false)
@@ -412,32 +438,32 @@ func (d *Dialog) Msgbox(text string) {
 func (d *Dialog) Passwordbox(insecure bool) (string, error) {
 	d.EnableCatch255()
 	var command string
-	if d.environment == KDE {
-		command = "password"
-	} else {
-		if insecure {
-			d.beforeDtype = append(d.beforeDtype, "--insecure")
-		}
-		d.afterSize = append(d.afterSize, "")
-		command = "passwordbox"
+	// if d.environment == KDE {
+	// 	command = "password"
+	// } else {
+	if insecure {
+		d.beforeDtype = append(d.beforeDtype, "--insecure")
 	}
+	d.afterSize = append(d.afterSize, "")
+	command = "passwordbox"
+	//	}
 	return d.exec(command, true)
 }
 
 func (d *Dialog) Pause(seconds int) {
-	if d.environment == KDE {
-		var percent = int(100 / seconds)
-		var p = d.Progressbar()
-		p.Step(100, "Pause "+strconv.Itoa(seconds)+" seconds")
-		for i := seconds; i > 0; i-- {
-			p.Step(int(percent*i), "Pause "+strconv.Itoa(i)+" seconds")
-			time.Sleep(1 * time.Second)
-		}
-		p.Close()
-	} else {
-		d.afterSize = append(d.afterSize, strconv.Itoa(seconds))
-		d.exec("pause", true)
-	}
+	// if d.environment == KDE {
+	// 	var percent = int(100 / seconds)
+	// 	var p = d.Progressbar()
+	// 	p.Step(100, "Pause "+strconv.Itoa(seconds)+" seconds")
+	// 	for i := seconds; i > 0; i-- {
+	// 		p.Step(int(percent*i), "Pause "+strconv.Itoa(i)+" seconds")
+	// 		time.Sleep(1 * time.Second)
+	// 	}
+	// 	p.Close()
+	// } else {
+	d.afterSize = append(d.afterSize, strconv.Itoa(seconds))
+	d.exec("pause", true)
+	//	}
 }
 
 //   A  text  box  lets  you  display the contents of a text file in a dialog box.
@@ -468,6 +494,7 @@ func (d *Dialog) Yesno() bool {
 	return true
 }
 
+// same as Yesno, but added text message
 func (d *Dialog) Question(text string) bool {
 	d.beforeSize = append(d.beforeSize, text)
 	d.EnableCatch255()
@@ -497,10 +524,9 @@ func (d *Dialog) Dselect(dirpath string) (string, error) {
 	d.EnableCatch255()
 	d.beforeSize = append(d.beforeSize, dirpath)
 	command := "dselect"
-	if d.environment == KDE {
-		return "", nil
-	}
-
+	// if d.environment == KDE {
+	// 	return "", nil
+	// }
 	return d.exec(command, false)
 }
 
@@ -541,20 +567,20 @@ type progress struct {
 // }
 
 func (d *Dialog) Progressbar() ProgressIface {
-	var out []byte
+	//	var out []byte
 	var id []string
-	if d.environment == KDE {
-		out, _ = exec.Command("kdialog", "--progressbar", "Initializing", "100", "--title", d.title).Output()
-		id = strings.Split(strings.Trim(string(out), " \n\r"), " ")
-	} else {
-		cmd := exec.Command(d.environment)
-		if d.shadow == false {
-			cmd.Args = append(cmd.Args, "--no-shadow")
-		}
-
-		cmd.Args = append(cmd.Args, "--title", d.title, "--gauge", d.label, strconv.Itoa(d.height), strconv.Itoa(d.width), "0", "--stdout")
-		cmd.Run()
+	// if d.environment == KDE {
+	// 	out, _ = exec.Command("kdialog", "--progressbar", "Initializing", "100", "--title", d.title).Output()
+	// 	id = strings.Split(strings.Trim(string(out), " \n\r"), " ")
+	// } else {
+	cmd := exec.Command(d.environment)
+	if d.shadow == false {
+		cmd.Args = append(cmd.Args, "--no-shadow")
 	}
+
+	cmd.Args = append(cmd.Args, "--title", d.title, "--gauge", d.label, strconv.Itoa(d.height), strconv.Itoa(d.width), "0", "--stdout")
+	cmd.Run()
+	//	}
 	var res = new(progress)
 	res.id = id
 	res.label = d.label
@@ -570,23 +596,22 @@ func (p *progress) Step(percent int, newLabel string) {
 	if newLabel == "" {
 		newLabel = p.label
 	}
-	if p.environment == KDE {
-		exec.Command("qdbus", p.id[0], p.id[1], "setLabelText", newLabel).Run()
-		exec.Command("qdbus", p.id[0], p.id[1], "Set", "", "value", strconv.Itoa(percent)).Run()
-	} else {
-		cmd := exec.Command(p.environment)
-		if p.shadow == false {
-			cmd.Args = append(cmd.Args, "--no-shadow")
-		}
-
-		cmd.Args = append(cmd.Args, "--title", p.title, "--gauge", newLabel, strconv.Itoa(p.height), strconv.Itoa(p.width), strconv.Itoa(percent), "--stdout")
-		cmd.Run()
+	// if p.environment == KDE {
+	// 	exec.Command("qdbus", p.id[0], p.id[1], "setLabelText", newLabel).Run()
+	// 	exec.Command("qdbus", p.id[0], p.id[1], "Set", "", "value", strconv.Itoa(percent)).Run()
+	// } else {
+	cmd := exec.Command(p.environment)
+	if p.shadow == false {
+		cmd.Args = append(cmd.Args, "--no-shadow")
 	}
+	cmd.Args = append(cmd.Args, "--title", p.title, "--gauge", newLabel, strconv.Itoa(p.height), strconv.Itoa(p.width), strconv.Itoa(percent), "--stdout")
+	cmd.Run()
+	//	}
 }
 
 func (p *progress) Close() {
-	if p.environment == KDE {
-		exec.Command("qdbus", p.id[0], p.id[1], "close").Run()
-	}
+	// if p.environment == KDE {
+	// 	exec.Command("qdbus", p.id[0], p.id[1], "close").Run()
+	// }
 	p = nil
 }

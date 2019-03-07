@@ -17,7 +17,8 @@ import (
 var my_private_exit_function func(code int) = os.Exit
 
 const (
-	DIALOG_PACKAGE_AUTO_NOT_FOUND = "Package not found!\nPlease install " + KDE + " or " + GTK + " or " + X + " or " + CONSOLE
+	//	DIALOG_PACKAGE_AUTO_NOT_FOUND = "Package not found!\nPlease install " + KDE + " or " + GTK + " or " + X + " or " + CONSOLE
+	DIALOG_PACKAGE_AUTO_NOT_FOUND = "Package not found!\nPlease install " + CONSOLE
 	DIALOG_ERR_UNKNWN_PACKAGE     = "Unknown package "
 )
 
@@ -25,23 +26,23 @@ const (
 func getPathOeRaiseError(environment string) error {
 	var err error
 	switch environment {
-	case CONSOLE, KDE, GTK, X:
+	case CONSOLE:
 		_, execution_error := exec.LookPath(environment)
 		if execution_error != nil {
 			err = fmt.Errorf("Package not found!\nPlease install " + environment)
 		}
-	case AUTO:
-		env := ""
-		for _, pkg := range []string{KDE, GTK, X, CONSOLE} {
-			_, execution_error := exec.LookPath(pkg)
-			if execution_error == nil {
-				env = pkg
-				break
-			}
-		}
-		if env == "" {
-			err = fmt.Errorf(DIALOG_PACKAGE_AUTO_NOT_FOUND)
-		}
+	// case AUTO:
+	// 	env := ""
+	// 	for _, pkg := range []string{KDE, GTK, X, CONSOLE} {
+	// 		_, execution_error := exec.LookPath(pkg)
+	// 		if execution_error == nil {
+	// 			env = pkg
+	// 			break
+	// 		}
+	// 	}
+	// 	if env == "" {
+	// 		err = fmt.Errorf(DIALOG_PACKAGE_AUTO_NOT_FOUND)
+	// 	}
 	case DIALOG_TEST_ENV:
 		break
 	default:
@@ -53,7 +54,7 @@ func getPathOeRaiseError(environment string) error {
 func DialogFindPathOrExit(environment string) {
 	err := getPathOeRaiseError(environment)
 	if err != nil {
-		fmt.Println(os.Stderr, err.Error())
+		fmt.Fprintln(os.Stderr, err.Error())
 		// os.Exit(1)
 		my_private_exit_function(1)
 	}

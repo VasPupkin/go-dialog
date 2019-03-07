@@ -39,12 +39,13 @@ type DialogIface interface {
 	HelpButton(truefalse bool)
 	SetHelpLabel(label string)
 	SetExtraLabel(label string)
-	Slider(min int, max int, step int) (int, error)
-	Passivepopup(text string, timeout int)
-	Geticon() string
-	Getcolor() string
 	Combobox(item ...string) (string, error)
-	Calendar(date time.Time) (string, error)
+	// not in console
+	// Slider(min int, max int, step int) (int, error)
+	// Passivepopup(text string, timeout int)
+	// Geticon() string
+	// Getcolor() string
+	// Calendar(date time.Time) (string, error)
 	Checklist(listHeight int, tagItemStatus ...string) ([]string, error)
 	Mixedform(title string, insecure bool, tagItemStatus ...string) ([]string, error)
 	Fselect(filepath string) (string, error)
@@ -52,6 +53,7 @@ type DialogIface interface {
 	Inputbox(value string) (string, error)
 	Inputmenu(menuHeight int, tagItem ...string) ([]string, error)
 	Menu(menuHeight int, tagItem ...string) (string, error)
+	MenuWText(menuHeight int, text string, tagItem ...string) (string, error)
 	Msgbox(text string)
 	Passwordbox(insecure bool) (string, error)
 	Pause(seconds int)

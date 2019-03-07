@@ -4,8 +4,8 @@ package dialog
 // Use of this source code is governed by a BSD-style
 
 type BaseDialog struct {
-	environment       string
-	parentId          int
+	environment string
+	//	parentId          int
 	title             string
 	backtitle         string
 	label             string

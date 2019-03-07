@@ -17,7 +17,7 @@ import (
 
 func main() {
 	// ============ a menu example ========= //
-	// d := dialog.New(dialog.AUTO, 0)
+	// d := dialog.New(dialog.CONSOLE, 0)
 	// list := make([]string, 0)
 	// list = append(list, "1", "2")
 	// d.EnableCatch255()
@@ -30,7 +30,7 @@ func main() {
 	// }
 
 	// ============ a Inputbox example ========= //
-	// d := dialog.New(dialog.AUTO, 0)
+	// d := dialog.New(dialog.CONSOLE, 0)
 	
 	// d.SetSize(8, 20)
 	// d.SetTitle("title")
@@ -42,12 +42,12 @@ func main() {
 	// fmt.Println(ipAddr)
 
 	// ============ a Yesno example ========= //
-	// d := dialog.New(dialog.AUTO, 0)
+	// d := dialog.New(dialog.CONSOLE, 0)
 	// res := d.Yesno()
 	// fmt.Println(res)
 
     // ============ a Dselect example ========= //
-	// d := dialog.New(dialog.AUTO, 0)
+	// d := dialog.New(dialog.CONSOLE, 0)
 
 	// d.SetSize(8, 50)
 	// d.SetTitle("title")
@@ -59,7 +59,7 @@ func main() {
 	// fmt.Println(ipAddr)
 
 	// ============ a Mixedform example ========= //
-	// d := dialog.New(dialog.AUTO, 0)
+	// d := dialog.New(dialog.CONSOLE, 0)
 
 	// d.HelpButton(true)
 	// d.SetHelpLabel("Back")
@@ -68,18 +68,18 @@ func main() {
 	// fmt.Println(res, err)
 
 	// ============= Calendar =================== //
-	// d := dialog.New(dialog.AUTO, 0)
+	// d := dialog.New(dialog.CONSOLE, 0)
 	//res, err := d.Calendar(time.Now())
     // fmt.Println(res, err)
 
 	// ============= Checklist =================== //
-	// d := dialog.New(dialog.AUTO, 0)	
+	// d := dialog.New(dialog.CONSOLE, 0)	
 	// res, err := d.Checklist(0, "Tag 1", "Item 1", "on", "Tag 2", "Item 2", "off", "Tag 3", "Item 3", "off")
 	// fmt.Println(res, err)
 
 
 	// ============= Mixedform =================== //
-	// d := dialog.New(dialog.AUTO, 0)	
+	// d := dialog.New(dialog.CONSOLE, 0)	
     // d.HelpButton(true)
 	// d.SetHelpLabel("Back")
 	// l := []string{"Selection1", "1", "1", "2046", "1", "10", "20", "0", "0", "Selection2", "2", "1", "0", "2", "10", "20", "0", "0", "Selection3", "3", "1", "0", "3", "10", "20", "0", "0"}
@@ -87,86 +87,86 @@ func main() {
 	// fmt.Println(res, err)
 
 	// ============= Fselect =================== //
-	// d := dialog.New(dialog.AUTO, 0)	
+	// d := dialog.New(dialog.CONSOLE, 0)	
 	// d.SetTitle("title")
 	// d.SetBackTitle("backtitle")
 	// res, err := d.Fselect("/tmp/test.txt")
 	// fmt.Println(res, err)
 
 	// ============= Infobox =================== //
-	// d := dialog.New(dialog.AUTO, 0)	
+	// d := dialog.New(dialog.CONSOLE, 0)	
 	// d.Infobox("Hello world!")
 
 	// ============= Infobox =================== //
-	// d := dialog.New(dialog.AUTO, 0)	
+	// d := dialog.New(dialog.CONSOLE, 0)	
 	// d.SetTitle("title")
 	// d.SetBackTitle("backtitle")
 	// res, err := d.Inputbox("Hello world!")
 	// fmt.Println(res, err)
 
 	// ============= Inputmenu =================== //
-	// d := dialog.New(dialog.AUTO, 0)	
+	// d := dialog.New(dialog.CONSOLE, 0)	
 	// d.SetTitle("title")
 	// d.SetBackTitle("backtitle")
 	// res, err := d.Inputmenu(10, "Tag 1", "Item 1", "Tag 2", "Item 2", "Tag 3", "Item 3")
 	// fmt.Println(res, err)
 
 	// ============= Manu =================== //
-	// d := dialog.New(dialog.AUTO, 0)	
+	// d := dialog.New(dialog.CONSOLE, 0)	
 	// d.SetTitle("title")
 	// d.SetBackTitle("backtitle")
 	// res, err := d.Menu(10, "Tag 1", "Item 1", "Tag 2", "Item 2", "Tag 3", "Item 3")
 	// fmt.Println(res, err)
 
 	// ============= Msgbox =================== //
-	// d := dialog.New(dialog.AUTO, 0)	
+	// d := dialog.New(dialog.CONSOLE, 0)	
 	// d.SetTitle("title")
 	// d.SetBackTitle("backtitle")
 	// d.Msgbox("Hello world!")
 
 	// ============= Passwordbox =================== //
-	// d := dialog.New(dialog.AUTO, 0)	
+	// d := dialog.New(dialog.CONSOLE, 0)	
 	// d.SetTitle("title")
 	// d.SetBackTitle("backtitle")
 	// res, err := d.Passwordbox(true)
 	// fmt.Println(res, err)
 
 	// ============= Pause =================== //
-	// d := dialog.New(dialog.AUTO, 0)	
+	// d := dialog.New(dialog.CONSOLE, 0)	
 	// d.SetTitle("title")
 	// d.SetBackTitle("backtitle")
 	//d.Pause(5)
 
 	// ============= Textbox =================== //
-	// d := dialog.New(dialog.AUTO, 0)	
+	// d := dialog.New(dialog.CONSOLE, 0)	
 	// d.SetTitle("title")
 	// d.SetBackTitle("backtitle")
 	// err := d.Textbox("/tmp/test.txt")
 	// fmt.Printf("err:%v\n", err)
 
 	// ============= Timebox =================== //
-	// d := dialog.New(dialog.AUTO, 0)	
+	// d := dialog.New(dialog.CONSOLE, 0)	
 	// d.SetTitle("title")
 	// d.SetBackTitle("backtitle")
 	// res, err := d.Timebox(time.Now())
 	// fmt.Println(res, err)
 
 	// ============= Radiolist =================== //
-	// d := dialog.New(dialog.AUTO, 0)	
+	// d := dialog.New(dialog.CONSOLE, 0)	
 	// d.SetTitle("title")
 	// d.SetBackTitle("backtitle")
 	// res, err := d.Radiolist(0, "Tag 1", "Item 1", "on", "Tag 2", "Item 2", "off", "Tag 3", "Item 3", "off")
 	// fmt.Println(res, err)
 
 	// ============= Radiolist =================== //
-	// d := dialog.New(dialog.AUTO, 0)	
+	// d := dialog.New(dialog.CONSOLE, 0)	
 	// d.SetTitle("title")
 	// d.SetBackTitle("backtitle")
 	// res, err := d.Dselect("/tmp")
 	// fmt.Println(res, err)
 
 	/// ============= !!!OLD stuff =================== //
-	// d := dialog.New(dialog.AUTO, 0)
+	// d := dialog.New(dialog.CONSOLE, 0)
 
 	// d.HelpButton(true)
 	// d.SetHelpLabel("Back")

@@ -1,7 +1,7 @@
 go-dialog
 =========
 
-go-dialog is a Go wrapper for the dialog utility originally written by Savio Lam, and later rewritten by Thomas E. Dickey.
+go-dialog is a Go wrapper for the console dialog utility originally written by Savio Lam, and later rewritten by Thomas E. Dickey.
 
 Usage
 =========
@@ -13,7 +13,7 @@ import (
 	"github.com/VasPupkin/go-dialog"	
 )
 func main() {
-   d := dialog.New(dialog.AUTO, 0)
+   d := dialog.New()
    d.Msgbox("Hello world!")
 }
 ```

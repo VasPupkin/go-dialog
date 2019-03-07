@@ -30,11 +30,11 @@ func TestGetPathOeRaiseError(t *testing.T) {
 		Err error
 	}{
 		{Env: CONSOLE, Err: fmt.Errorf("Package not found!\nPlease install " + CONSOLE)},
-		{Env: X, Err: fmt.Errorf("Package not found!\nPlease install " + X)},
-		{Env: KDE, Err: fmt.Errorf("Package not found!\nPlease install " + KDE)},
-		{Env: GTK, Err: fmt.Errorf("Package not found!\nPlease install " + GTK)},
-		{Env: DIALOG_TEST_ENV, Err: nil},
-		{Env: AUTO, Err: fmt.Errorf(DIALOG_PACKAGE_AUTO_NOT_FOUND)},
+		// {Env: X, Err: fmt.Errorf("Package not found!\nPlease install " + X)},
+		// {Env: KDE, Err: fmt.Errorf("Package not found!\nPlease install " + KDE)},
+		// {Env: GTK, Err: fmt.Errorf("Package not found!\nPlease install " + GTK)},
+		// {Env: DIALOG_TEST_ENV, Err: nil},
+		// {Env: AUTO, Err: fmt.Errorf(DIALOG_PACKAGE_AUTO_NOT_FOUND)},
 		{Env: "sadadsAUTO", Err: fmt.Errorf(DIALOG_ERR_UNKNWN_PACKAGE + "sadadsAUTO")},
 	}
 
@@ -112,59 +112,59 @@ func TestDialogFindPathOrExitConsole(t *testing.T) {
 	t.Fatalf("process ran with err %v , want exit status 1", err)
 }
 
-func TestDialogFindPathOrExitKDE(t *testing.T) {
-	if os.Getenv("BE_CRASHER") == "TestDialogFindPathOrExitKDE" {
-		DialogFindPathOrExit(KDE)
-		return
-	}
-	os.Setenv("PATH", "")
-	cmd := exec.Command(os.Args[0], "-test.run=TestDialogFindPathOrExitKDE")
-	// t.Fatalf(cmd.Path)
-	// cmd.Path = ""
-	cmd.Env = append(os.Environ(), "BE_CRASHER=TestDialogFindPathOrExitKDE")
-	err := cmd.Run()
-	// bs, err := cmd.CombinedOutput()
-	// t.Log(bs)
-	// t.Log(err)
-	e, ok := err.(*exec.ExitError)
+// func TestDialogFindPathOrExitKDE(t *testing.T) {
+// 	if os.Getenv("BE_CRASHER") == "TestDialogFindPathOrExitKDE" {
+// 		DialogFindPathOrExit(KDE)
+// 		return
+// 	}
+// 	os.Setenv("PATH", "")
+// 	cmd := exec.Command(os.Args[0], "-test.run=TestDialogFindPathOrExitKDE")
+// 	// t.Fatalf(cmd.Path)
+// 	// cmd.Path = ""
+// 	cmd.Env = append(os.Environ(), "BE_CRASHER=TestDialogFindPathOrExitKDE")
+// 	err := cmd.Run()
+// 	// bs, err := cmd.CombinedOutput()
+// 	// t.Log(bs)
+// 	// t.Log(err)
+// 	e, ok := err.(*exec.ExitError)
 
-	if ok && !e.Success() {
-		if e.String() != "exit status 1" {
-			t.Fatalf(" %v , want exit status 1", e.String())
-		}
-		return
-	}
+// 	if ok && !e.Success() {
+// 		if e.String() != "exit status 1" {
+// 			t.Fatalf(" %v , want exit status 1", e.String())
+// 		}
+// 		return
+// 	}
 
-	t.Fatalf("process ran with err %v , want exit status 1", err)
+// 	t.Fatalf("process ran with err %v , want exit status 1", err)
 
-}
+// }
 
-func TestDialogFindPathOrExitGTK(t *testing.T) {
-	if os.Getenv("BE_CRASHER") == "TestDialogFindPathOrExitGTK" {
-		DialogFindPathOrExit(GTK)
-		return
-	}
-	os.Setenv("PATH", "")
-	cmd := exec.Command(os.Args[0], "-test.run=TestDialogFindPathOrExitGTK")
-	// t.Fatalf(cmd.Path)
-	// cmd.Path = ""
-	cmd.Env = append(os.Environ(), "BE_CRASHER=TestDialogFindPathOrExitGTK")
-	err := cmd.Run()
-	// bs, err := cmd.CombinedOutput()
-	// t.Log(bs)
-	// t.Log(err)
-	e, ok := err.(*exec.ExitError)
+// func TestDialogFindPathOrExitGTK(t *testing.T) {
+// 	if os.Getenv("BE_CRASHER") == "TestDialogFindPathOrExitGTK" {
+// 		DialogFindPathOrExit(GTK)
+// 		return
+// 	}
+// 	os.Setenv("PATH", "")
+// 	cmd := exec.Command(os.Args[0], "-test.run=TestDialogFindPathOrExitGTK")
+// 	// t.Fatalf(cmd.Path)
+// 	// cmd.Path = ""
+// 	cmd.Env = append(os.Environ(), "BE_CRASHER=TestDialogFindPathOrExitGTK")
+// 	err := cmd.Run()
+// 	// bs, err := cmd.CombinedOutput()
+// 	// t.Log(bs)
+// 	// t.Log(err)
+// 	e, ok := err.(*exec.ExitError)
 
-	if ok && !e.Success() {
-		if e.String() != "exit status 1" {
-			t.Fatalf(" %v , want exit status 1", e.String())
-		}
-		return
-	}
+// 	if ok && !e.Success() {
+// 		if e.String() != "exit status 1" {
+// 			t.Fatalf(" %v , want exit status 1", e.String())
+// 		}
+// 		return
+// 	}
 
-	t.Fatalf("process ran with err %v , want exit status 1", err)
+// 	t.Fatalf("process ran with err %v , want exit status 1", err)
 
-}
+// }
 
 func TestDialogFindPathOrExit_EXIT(t *testing.T) {
 	var ok bool = false // The default value can be omitted :)
@@ -179,12 +179,12 @@ func TestDialogFindPathOrExit_EXIT(t *testing.T) {
 		Ok  bool
 	}{
 		{Env: CONSOLE, Ok: true},
-		{Env: X, Ok: true},
-		{Env: KDE, Ok: true},
-		{Env: GTK, Ok: true},
+		// {Env: X, Ok: true},
+		// {Env: KDE, Ok: true},
+		// {Env: GTK, Ok: true},
 		{Env: DIALOG_TEST_ENV, Ok: false},
-		{Env: KDE, Ok: true},
-		{Env: "sadadsAUTO", Ok: true},
+		//		{Env: KDE, Ok: true},
+		//		{Env: "AUTO", Ok: true},
 	}
 
 	if len(fixtures) < 1 {
@@ -209,56 +209,57 @@ func TestDialogFindPathOrExit_EXIT(t *testing.T) {
 	// Restore if need
 	my_private_exit_function = os.Exit
 }
-func TestDialogFindPathOrExitX(t *testing.T) {
-	if os.Getenv("BE_CRASHER") == "TestDialogFindPathOrExitX" {
-		DialogFindPathOrExit(X)
-		return
-	}
-	os.Setenv("PATH", "")
-	cmd := exec.Command(os.Args[0], "-test.run=TestDialogFindPathOrExitX")
-	// t.Fatalf(cmd.Path)
-	// cmd.Path = ""
-	cmd.Env = append(os.Environ(), "BE_CRASHER=TestDialogFindPathOrExitX")
-	err := cmd.Run()
-	// bs, err := cmd.CombinedOutput()
-	// t.Log(bs)
-	// t.Log(err)
-	e, ok := err.(*exec.ExitError)
 
-	if ok && !e.Success() {
-		if e.String() != "exit status 1" {
-			t.Fatalf(" %v , want exit status 1", e.String())
-		}
-		return
-	}
-	t.Fatalf("process ran with err %v , want exit status 1", err)
+// func TestDialogFindPathOrExitX(t *testing.T) {
+// 	if os.Getenv("BE_CRASHER") == "TestDialogFindPathOrExitX" {
+// 		DialogFindPathOrExit(X)
+// 		return
+// 	}
+// 	os.Setenv("PATH", "")
+// 	cmd := exec.Command(os.Args[0], "-test.run=TestDialogFindPathOrExitX")
+// 	// t.Fatalf(cmd.Path)
+// 	// cmd.Path = ""
+// 	cmd.Env = append(os.Environ(), "BE_CRASHER=TestDialogFindPathOrExitX")
+// 	err := cmd.Run()
+// 	// bs, err := cmd.CombinedOutput()
+// 	// t.Log(bs)
+// 	// t.Log(err)
+// 	e, ok := err.(*exec.ExitError)
 
-}
+// 	if ok && !e.Success() {
+// 		if e.String() != "exit status 1" {
+// 			t.Fatalf(" %v , want exit status 1", e.String())
+// 		}
+// 		return
+// 	}
+// 	t.Fatalf("process ran with err %v , want exit status 1", err)
 
-func TestDialogFindPathOrExitAUTO(t *testing.T) {
-	if os.Getenv("BE_CRASHER") == "TestDialogFindPathOrExitAUTO" {
-		DialogFindPathOrExit(AUTO)
-		return
-	}
-	os.Setenv("PATH", "")
-	cmd := exec.Command(os.Args[0], "-test.run=TestDialogFindPathOrExitAUTO")
-	// t.Fatalf(cmd.Path)
-	// cmd.Path = ""
-	cmd.Env = append(os.Environ(), "BE_CRASHER=TestDialogFindPathOrExitAUTO")
-	err := cmd.Run()
-	// bs, err := cmd.CombinedOutput()
-	// t.Log(bs)
-	// t.Log(err)
-	e, ok := err.(*exec.ExitError)
+// }
 
-	if ok && !e.Success() {
-		if e.String() != "exit status 1" {
-			t.Fatalf(" %v , want exit status 1", e.String())
-		}
-		return
-	}
-	t.Fatalf("process ran with err %v , want exit status 1", err)
-}
+// func TestDialogFindPathOrExitAUTO(t *testing.T) {
+// 	if os.Getenv("BE_CRASHER") == "TestDialogFindPathOrExitAUTO" {
+// 		DialogFindPathOrExit(AUTO)
+// 		return
+// 	}
+// 	os.Setenv("PATH", "")
+// 	cmd := exec.Command(os.Args[0], "-test.run=TestDialogFindPathOrExitAUTO")
+// 	// t.Fatalf(cmd.Path)
+// 	// cmd.Path = ""
+// 	cmd.Env = append(os.Environ(), "BE_CRASHER=TestDialogFindPathOrExitAUTO")
+// 	err := cmd.Run()
+// 	// bs, err := cmd.CombinedOutput()
+// 	// t.Log(bs)
+// 	// t.Log(err)
+// 	e, ok := err.(*exec.ExitError)
+
+// 	if ok && !e.Success() {
+// 		if e.String() != "exit status 1" {
+// 			t.Fatalf(" %v , want exit status 1", e.String())
+// 		}
+// 		return
+// 	}
+// 	t.Fatalf("process ran with err %v , want exit status 1", err)
+// }
 
 func TestDialogFindPathOrExitDIALOG_TEST_ENV(t *testing.T) {
 	if os.Getenv("BE_CRASHER") == "TestDialogFindPathOrExitDIALOG_TEST_ENV" {
