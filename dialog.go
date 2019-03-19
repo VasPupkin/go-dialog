@@ -397,6 +397,13 @@ func (d *Dialog) Inputbox(value string) (string, error) {
 	return d.exec("inputbox", true)
 }
 
+func (d *Dialog) InputboxWthMsg(message, value string) (string, error) {
+	d.EnableCatch255()
+	d.beforeSize = append(d.beforeSize, message)
+	d.afterSize = append(d.afterSize, value)
+	return d.exec("inputbox", false)
+}
+
 func (d *Dialog) Inputmenu(menuHeight int, tagItem ...string) ([]string, error) {
 	d.EnableCatch255()
 	d.afterSize = append(d.afterSize, strconv.Itoa(menuHeight))

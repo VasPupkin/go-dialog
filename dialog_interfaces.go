@@ -51,6 +51,7 @@ type DialogIface interface {
 	Fselect(filepath string) (string, error)
 	Infobox(text string)
 	Inputbox(value string) (string, error)
+	InputboxWthMsg(message, value string) (string, error)
 	Inputmenu(menuHeight int, tagItem ...string) ([]string, error)
 	Menu(menuHeight int, tagItem ...string) (string, error)
 	MenuWText(menuHeight int, text string, tagItem ...string) (string, error)
